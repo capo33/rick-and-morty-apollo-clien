@@ -1,0 +1,19 @@
+.Character {
+  display: flex;
+  justify-content: center;
+}
+
+.Character-content {
+  margin-left: 2rem;
+}
+
+.Character-episode {
+  margin-top: 2rem;
+}
+
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  /* margin-bottom: 10px; */
+}
