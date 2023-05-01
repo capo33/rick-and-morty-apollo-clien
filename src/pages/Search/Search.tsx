@@ -1,6 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
+import FormControl from "@mui/joy/FormControl";
+import Input from "@mui/joy/Input";
+import Button from "@mui/joy/Button";
 
 const GET_CHARACTER_LOCTATION = gql`
   query GetCharacterLocation($name: String!) {
@@ -37,10 +40,14 @@ const Search = () => {
     setName(e.target.value);
   }, []);
 
-  const handleSearch = useCallback(() => {
-    getLocation();
-    setClick(true);
-  }, [getLocation]);
+  const handleSearch = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      getLocation();
+      setClick(true);
+    },
+    [getLocation]
+  );
 
   return (
     <div>
@@ -49,9 +56,30 @@ const Search = () => {
       <Link to='/' className='link'>
         Back
       </Link>
-      <input type='text' value={name} onChange={handleChange} />
-      <button onClick={handleSearch}>Search</button>
 
+      <form onSubmit={handleSearch}>
+        <FormControl>
+          <Input
+            sx={{ "--Input-decoratorChildHeight": "45px" }}
+            size='md'
+            style={{ width: "300px" }}
+            placeholder='Search for character'
+            type='text'
+            value={name}
+            onChange={handleChange}
+            endDecorator={
+              <Button
+                variant='solid'
+                color='primary'
+                type='submit'
+                sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+              >
+                Search
+              </Button>
+            }
+          />
+        </FormControl>
+      </form>
       {click ? (
         <ul>
           {data?.characters.results.map(
@@ -61,7 +89,7 @@ const Search = () => {
           )}
         </ul>
       ) : (
-        <div>No data</div>
+        <p>No data</p>
       )}
     </div>
   );
